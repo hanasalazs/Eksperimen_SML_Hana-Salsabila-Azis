@@ -1,0 +1,33 @@
+import os
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+def run_preprocessing():
+    print("=== Memulai Proses Preprocessing Data ===")
+    
+    # Definisikan path
+    raw_data_path = os.path.join("namadataset_raw", "student-por.csv")
+    output_dir = os.path.join("preprocessing", "namadataset_preprocessing")
+    output_file_path = os.path.join(output_dir, "student_clean.csv")
+    
+    # Pastikan folder output tersedia
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # 1. Load Data
+    if not os.path.exists(raw_data_path):
+        raise FileNotFoundError(f"File {raw_data_path} tidak ditemukan!")
+        
+    df = pd.read_csv(raw_data_path, sep=';')
+    data = df.copy()
+    
+    # 2. Encoding Data Kategorikal (Sesuai eksperimen Hana)
+    le = LabelEncoder()
+    for col in data.select_dtypes(include='object').columns:
+        data[col] = le.fit_transform(data[col])
+        
+    # 3. Simpan dataset hasil preprocessing
+    data.to_csv(output_file_path, index=False)
+    print(f"=== Preprocessing Selesai! Data disimpan di: {output_file_path} ===")
+
+if __name__ == "__main__":
+    run_preprocessing()
