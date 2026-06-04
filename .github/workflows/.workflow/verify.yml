@@ -1,0 +1,18 @@
+cat << 'EOF' > .github/workflows/verify.yml
+name: Advanced Preprocessing CI/CD Pipeline
+on: [push, pull_request]
+jobs:
+  verify-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install Dependencies
+        run: pip install pandas scikit-learn requests
+      - name: Run Automation Script
+        run: python preprocessing/automate_Hana-Salsabila-Azis.py
+EOF
